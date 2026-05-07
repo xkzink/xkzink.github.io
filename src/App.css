@@ -1,0 +1,401 @@
+.index {
+  min-height: 100vh;
+}
+
+.el-header {
+  --el-header-padding: 0 20px;
+  --el-header-height: 60px;
+  padding: var(--el-header-padding);
+  box-sizing: border-box;
+  flex-shrink: 0;
+  height: 130px;
+  font-size: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.el-header .my-name {
+  line-height: 100px;
+}
+
+.el-header .my-name .name {
+  border-bottom: none;
+}
+
+.el-header .my-link {
+  height: 25px;
+}
+
+.el-header .my-link ul li {
+  display: inline-block;
+  padding: 0 20px;
+}
+
+.el-header .link-color {
+  color: grey;
+  font-weight: bold;
+}
+
+.el-header .link-color:hover,
+.el-header .active-router {
+  color: #2d3748;
+  border-bottom: 2px solid;
+  border-color: #4dc0b5;
+}
+
+.el-main {
+  --el-main-padding: 20px;
+  display: block;
+  flex: 1;
+  flex-basis: auto;
+  overflow: auto;
+  padding: var(--el-main-padding);
+  box-sizing: border-box;
+}
+
+.el-footer {
+  --el-footer-padding: 0 20px;
+  --el-footer-height: 60px;
+  padding: var(--el-footer-padding);
+  flex-shrink: 0;
+  box-sizing: border-box;
+  height: 100px;
+  padding-top: 30px;
+  text-align: center;
+}
+
+.el-footer .links {
+  margin-bottom: 10px;
+}
+
+.el-footer .links li {
+  display: inline;
+  margin: 0 1px;
+}
+
+.el-footer .links li:not(:last-child)::after {
+  content: '|';
+}
+
+.el-footer .copy-right {
+  font-size: 12px;
+  color: grey;
+}
+
+.home {
+  min-height: 600px;
+}
+
+.home .info {
+  padding: 100px 0 0 250px;
+}
+
+.font {
+  font-size: 1.5rem;
+}
+
+.photo {
+  min-height: 600px;
+}
+
+.photo .banner {
+  padding-top: 100px;
+}
+
+.photo .banner .myImg {
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.el-carousel {
+  --el-carousel-arrow-font-size: 24px;
+  --el-carousel-arrow-size: 36px;
+  --el-carousel-arrow-background: rgba(31, 45, 61, 0.11);
+  --el-carousel-arrow-hover-background: rgba(31, 45, 61, 0.23);
+  --el-carousel-indicator-width: 30px;
+  --el-carousel-indicator-height: 2px;
+  --el-carousel-indicator-padding-horizontal: 4px;
+  --el-carousel-indicator-padding-vertical: 12px;
+  position: relative;
+}
+
+.el-carousel--horizontal {
+  overflow-x: hidden;
+}
+
+.el-carousel__container {
+  position: relative;
+  height: 400px;
+}
+
+.el-carousel__item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.el-carousel__item--card,
+.el-carousel__item.is-animating {
+  transition: transform 0.4s ease-in-out;
+}
+
+.el-carousel__item--card {
+  width: 50%;
+}
+
+.el-carousel__item.is-active {
+  z-index: 2;
+}
+
+.el-carousel__item.is-in-stage {
+  cursor: pointer;
+  z-index: 1;
+}
+
+.el-carousel__item.is-hidden {
+  visibility: hidden;
+}
+
+.el-carousel__mask {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  opacity: 0.24;
+  transition: 0.2s;
+}
+
+.el-carousel__item.is-in-stage:hover .el-carousel__mask {
+  opacity: 0.12;
+}
+
+.el-carousel__arrow {
+  border: none;
+  outline: 0;
+  padding: 0;
+  margin: 0;
+  height: var(--el-carousel-arrow-size);
+  width: var(--el-carousel-arrow-size);
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 50%;
+  background-color: var(--el-carousel-arrow-background);
+  color: #fff;
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  transform: translateY(-50%);
+  text-align: center;
+  font-size: var(--el-carousel-arrow-font-size);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+}
+
+.el-carousel:hover .el-carousel__arrow {
+  opacity: 1;
+}
+
+.el-carousel__arrow--left {
+  left: 16px;
+}
+
+.el-carousel__arrow--right {
+  right: 16px;
+}
+
+.el-carousel__arrow:hover {
+  background-color: var(--el-carousel-arrow-hover-background);
+}
+
+.el-carousel__indicators {
+  position: absolute;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  z-index: 2;
+}
+
+.el-carousel__indicators--horizontal {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.el-carousel__indicator {
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.el-carousel__indicator--horizontal {
+  display: inline-block;
+  padding: var(--el-carousel-indicator-padding-vertical)
+    var(--el-carousel-indicator-padding-horizontal);
+}
+
+.el-carousel__indicator:hover button {
+  opacity: 0.72;
+}
+
+.el-carousel__indicator.is-active button {
+  opacity: 1;
+}
+
+.el-carousel__button {
+  display: block;
+  opacity: 0.48;
+  width: var(--el-carousel-indicator-width);
+  height: var(--el-carousel-indicator-height);
+  background-color: #fff;
+  border: none;
+  outline: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.modal {
+  display: block;
+  position: fixed;
+  z-index: 999;
+  padding-top: 150px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.modal-content {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 1000px;
+  max-height: 650px;
+}
+
+#caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 1000px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+.modal-content,
+#caption {
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+  from {
+    transform: scale(0);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+.close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.games {
+  min-height: 600px;
+  padding-top: 50px;
+  padding-left: 50px;
+}
+
+.games .content li {
+  width: 275px;
+  height: 240px;
+  float: left;
+  box-sizing: border-box;
+  border: 1px solid #eee;
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
+
+.games .content li:hover {
+  box-shadow: 0 0 5px rgb(0 0 0 / 20%);
+}
+
+.games .content .img {
+  width: 274px;
+  height: 185px;
+  overflow: hidden;
+}
+
+.games .content .img img {
+  width: 275px;
+  height: 185px;
+}
+
+.games .content .img .animate {
+  transition: all 1.5s;
+}
+
+.games .content .img .animate:hover {
+  transform: scale(1.2);
+}
+
+.games .content .info {
+  text-align: center;
+}
+
+.games .content .info .desc {
+  margin-top: 14px;
+  height: 44px;
+  font-size: 16px;
+  overflow: hidden;
+  color: #333;
+}
+
+.canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.particles-canvas {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+}
+
+@media only screen and (max-width: 700px) {
+  .modal-content {
+    width: 100%;
+  }
+}
