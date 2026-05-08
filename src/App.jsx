@@ -6,6 +6,8 @@ const navItems = [
   { label: "Photos", path: "/photo" },
   { label: "Games", path: "/games" },
 ];
+const routePaths = navItems.map((item) => item.path);
+const redirectPathKey = "xkzink.redirectPath";
 
 const homeContents = [
   "<span class='underline'>He</span>llo.",
@@ -15,34 +17,53 @@ const homeContents = [
   "I like <span class='underline'>g</span>ames, <span class='underline'>g</span>uitar, <span class='underline'>tra</span>vel and <span class='underline'>photo</span>graph.",
 ];
 
-function normalizeHash() {
-  const hash = window.location.hash.replace(/^#/, "");
-  return hash === "/" || hash === "" ? "/home" : hash;
+function normalizePath(pathname) {
+  const path = (pathname || window.location.pathname).replace(/\/+$/, "") || "/home";
+  return routePaths.includes(path) ? path : "/home";
 }
 
-function useHashRoute() {
-  const [path, setPath] = useState(normalizeHash);
+function getInitialPath() {
+  return normalizePath(window.sessionStorage.getItem(redirectPathKey) || window.location.pathname);
+}
+
+function usePathRoute() {
+  const [path, setPath] = useState(getInitialPath);
 
   useEffect(() => {
-    const onHashChange = () => setPath(normalizeHash());
-    window.addEventListener("hashchange", onHashChange);
+    const redirectPath = window.sessionStorage.getItem(redirectPathKey);
+    const initialPath = normalizePath(redirectPath || window.location.pathname);
+    window.sessionStorage.removeItem(redirectPathKey);
 
-    if (window.location.hash === "" || window.location.hash === "#/") {
-      window.location.hash = "#/home";
+    if (window.location.pathname !== initialPath) {
+      window.history.replaceState(null, "", initialPath);
     }
 
-    return () => window.removeEventListener("hashchange", onHashChange);
+    const onPopState = () => setPath(normalizePath());
+    window.addEventListener("popstate", onPopState);
+
+    return () => window.removeEventListener("popstate", onPopState);
   }, []);
 
-  return path;
+  const navigate = (event, nextPath) => {
+    event.preventDefault();
+
+    if (window.location.pathname !== nextPath) {
+      window.history.pushState(null, "", nextPath);
+    }
+
+    setPath(normalizePath(nextPath));
+    window.scrollTo({ top: 0 });
+  };
+
+  return [path, navigate];
 }
 
-function Header({ currentPath }) {
+function Header({ currentPath, onNavigate }) {
   return (
     <header className="el-header w clearfix">
       <div className="my-name">
         <h1>
-          <a className="name" href="#/">
+          <a className="name" href="/home" onClick={(event) => onNavigate(event, "/home")}>
             Xinkai Lin
           </a>
         </h1>
@@ -53,7 +74,8 @@ function Header({ currentPath }) {
             <li key={item.path}>
               <a
                 className={`link-color ${currentPath === item.path ? "active-router" : ""}`}
-                href={`#${item.path}`}
+                href={item.path}
+                onClick={(event) => onNavigate(event, item.path)}
               >
                 {item.label}
               </a>
@@ -405,11 +427,11 @@ function ParticlesBackground() {
 }
 
 export default function App() {
-  const currentPath = useHashRoute();
+  const [currentPath, navigate] = usePathRoute();
 
   return (
     <div className="index">
-      <Header currentPath={currentPath} />
+      <Header currentPath={currentPath} onNavigate={navigate} />
       <Main currentPath={currentPath} />
       <Footer />
       <ParticlesBackground />
