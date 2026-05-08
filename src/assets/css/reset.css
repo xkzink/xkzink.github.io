@@ -41,7 +41,3 @@ body {
 .clearfix::after {
   clear: both;
 }
-.clearfix {
-  /*for IE6,7*/
-  *zoom: 1;
-}

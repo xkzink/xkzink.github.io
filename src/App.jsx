@@ -1,30 +1,23 @@
-import {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
-import { gameList, photoList } from './data';
+import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
+import { gameList, photoList } from "./data";
 
 const navItems = [
-  { label: 'Home', path: '/home' },
-  { label: 'Photos', path: '/photo' },
-  { label: 'Games', path: '/games' },
+  { label: "Home", path: "/home" },
+  { label: "Photos", path: "/photo" },
+  { label: "Games", path: "/games" },
 ];
 
 const homeContents = [
   "<span class='underline'>He</span>llo.",
-  '<br/><br/>',
+  "<br/><br/>",
   "I'm a <span class='underline'>dev</span>eloper from New York.",
-  '<br/>',
+  "<br/>",
   "I like <span class='underline'>g</span>ames, <span class='underline'>g</span>uitar, <span class='underline'>tra</span>vel and <span class='underline'>photo</span>graph.",
 ];
 
 function normalizeHash() {
-  const hash = window.location.hash.replace(/^#/, '');
-  return hash === '/' || hash === '' ? '/home' : hash;
+  const hash = window.location.hash.replace(/^#/, "");
+  return hash === "/" || hash === "" ? "/home" : hash;
 }
 
 function useHashRoute() {
@@ -32,13 +25,13 @@ function useHashRoute() {
 
   useEffect(() => {
     const onHashChange = () => setPath(normalizeHash());
-    window.addEventListener('hashchange', onHashChange);
+    window.addEventListener("hashchange", onHashChange);
 
-    if (window.location.hash === '' || window.location.hash === '#/') {
-      window.location.hash = '#/home';
+    if (window.location.hash === "" || window.location.hash === "#/") {
+      window.location.hash = "#/home";
     }
 
-    return () => window.removeEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
   return path;
@@ -59,9 +52,7 @@ function Header({ currentPath }) {
           {navItems.map((item) => (
             <li key={item.path}>
               <a
-                className={`link-color ${
-                  currentPath === item.path ? 'active-router' : ''
-                }`}
+                className={`link-color ${currentPath === item.path ? "active-router" : ""}`}
                 href={`#${item.path}`}
               >
                 {item.label}
@@ -80,20 +71,12 @@ function Footer() {
       <div className="links">
         <ul>
           <li>
-            <a
-              href="https://www.linkedin.com/in/xinkailin/"
-              target="_blank"
-              rel="noreferrer"
-            >
+            <a href="https://www.linkedin.com/in/xinkailin/" target="_blank" rel="noreferrer">
               LinkedIn
             </a>
           </li>
           <li>
-            <a
-              href="https://www.instagram.com/xinkai00007/"
-              target="_blank"
-              rel="noreferrer"
-            >
+            <a href="https://www.instagram.com/xinkai00007/" target="_blank" rel="noreferrer">
               Instagram
             </a>
           </li>
@@ -111,13 +94,10 @@ function Footer() {
 
 const TypeWriter = forwardRef(function TypeWriter({ contents, className }, ref) {
   const [index, setIndex] = useState(0);
-  const [words, setWords] = useState('');
+  const [words, setWords] = useState("");
   const [blink, setBlink] = useState(true);
   const timerRef = useRef(null);
-  const content = useMemo(
-    () => contents.reduce((prev, curr) => `${prev} ${curr}`, ''),
-    [contents]
-  );
+  const content = useMemo(() => contents.reduce((prev, curr) => `${prev} ${curr}`, ""), [contents]);
 
   useImperativeHandle(ref, () => ({
     showAll() {
@@ -147,8 +127,8 @@ const TypeWriter = forwardRef(function TypeWriter({ contents, className }, ref) 
     if (index === 0 || index > content.length) return;
 
     let nextIndex = index;
-    if (content.slice(nextIndex, nextIndex + 1) === '<') {
-      const close = content.slice(nextIndex).indexOf('>');
+    if (content.slice(nextIndex, nextIndex + 1) === "<") {
+      const close = content.slice(nextIndex).indexOf(">");
       nextIndex += close;
     }
 
@@ -161,7 +141,7 @@ const TypeWriter = forwardRef(function TypeWriter({ contents, className }, ref) 
   }, [content, index]);
 
   return (
-    <div className={`font ${className || ''}`}>
+    <div className={`font ${className || ""}`}>
       <span dangerouslySetInnerHTML={{ __html: words }} />
       {blink && <span>|</span>}
     </div>
@@ -206,18 +186,18 @@ function PhotoCarousel({ isPlaying, onImageClick }) {
           const total = photoList.length;
           const prevIndex = (activeIndex - 1 + total) % total;
           const nextIndex = (activeIndex + 1) % total;
-          let stageClass = 'is-hidden';
-          let transform = 'translateX(240px) scale(0.83)';
+          let stageClass = "is-hidden";
+          let transform = "translateX(50%) scale(0.83)";
 
           if (index === activeIndex) {
-            stageClass = 'is-active';
-            transform = 'translateX(240px) scale(1)';
+            stageClass = "is-active";
+            transform = "translateX(50%) scale(1)";
           } else if (index === prevIndex) {
-            stageClass = 'is-in-stage is-left';
-            transform = 'translateX(0) scale(0.83)';
+            stageClass = "is-in-stage is-left";
+            transform = "translateX(0) scale(0.83)";
           } else if (index === nextIndex) {
-            stageClass = 'is-in-stage is-right';
-            transform = 'translateX(480px) scale(0.83)';
+            stageClass = "is-in-stage is-right";
+            transform = "translateX(100%) scale(0.83)";
           }
 
           return (
@@ -230,7 +210,6 @@ function PhotoCarousel({ isPlaying, onImageClick }) {
                 className="myImg"
                 src={item.src}
                 alt={item.alt}
-                style={{ height: '400px', width: '100%' }}
                 onClick={() => onImageClick(item)}
               />
               {index !== activeIndex && <div className="el-carousel__mask" />}
@@ -257,7 +236,7 @@ function PhotoCarousel({ isPlaying, onImageClick }) {
           {photoList.map((item, index) => (
             <li
               className={`el-carousel__indicator el-carousel__indicator--horizontal ${
-                index === activeIndex ? 'is-active' : ''
+                index === activeIndex ? "is-active" : ""
               }`}
               key={item.id}
             >
@@ -341,9 +320,9 @@ function Games() {
 function Main({ currentPath }) {
   let page = <Home />;
 
-  if (currentPath === '/photo') {
+  if (currentPath === "/photo") {
     page = <Photo />;
-  } else if (currentPath === '/games') {
+  } else if (currentPath === "/games") {
     page = <Games />;
   }
 
@@ -357,7 +336,7 @@ function ParticlesBackground() {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
+    const context = canvas.getContext("2d");
 
     const resize = () => {
       canvas.width = canvas.clientWidth;
@@ -390,10 +369,7 @@ function ParticlesBackground() {
 
         for (let nextIndex = index + 1; nextIndex < particlesRef.current.length; nextIndex += 1) {
           const nextParticle = particlesRef.current[nextIndex];
-          const distance = Math.hypot(
-            particle.x - nextParticle.x,
-            particle.y - nextParticle.y
-          );
+          const distance = Math.hypot(particle.x - nextParticle.x, particle.y - nextParticle.y);
 
           if (distance < 140) {
             const alpha = (1 - distance / 140) * 0.5;
@@ -411,11 +387,11 @@ function ParticlesBackground() {
 
     resize();
     render();
-    window.addEventListener('resize', resize);
+    window.addEventListener("resize", resize);
 
     return () => {
       cancelAnimationFrame(animationRef.current);
-      window.removeEventListener('resize', resize);
+      window.removeEventListener("resize", resize);
     };
   }, []);
 
@@ -423,7 +399,7 @@ function ParticlesBackground() {
     <canvas
       ref={canvasRef}
       className="canvas particles-canvas"
-      style={{ backgroundColor: '#fff' }}
+      style={{ backgroundColor: "#fff" }}
     />
   );
 }
