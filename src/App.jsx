@@ -10,12 +10,53 @@ const routePaths = navItems.map((item) => item.path);
 const redirectPathKey = "xkzink.redirectPath";
 
 const homeContents = [
-  "<span class='underline'>He</span>llo.",
-  "<br/><br/>",
-  "I'm a <span class='underline'>dev</span>eloper from New York.",
-  "<br/>",
-  "I like <span class='underline'>g</span>ames, <span class='underline'>g</span>uitar, <span class='underline'>tra</span>vel and <span class='underline'>photo</span>graph.",
+  { text: "He", className: "underline" },
+  { text: "llo." },
+  { break: true },
+  { break: true },
+  { text: "I'm a " },
+  { text: "dev", className: "underline" },
+  { text: "eloper from New York." },
+  { break: true },
+  { text: "I like " },
+  { text: "g", className: "underline" },
+  { text: "ames, " },
+  { text: "g", className: "underline" },
+  { text: "uitar, " },
+  { text: "tra", className: "underline" },
+  { text: "vel and " },
+  { text: "photo", className: "underline" },
+  { text: "graph." },
 ];
+
+function getTypeContentLength(contents) {
+  return contents.reduce((length, item) => length + (item.break ? 1 : item.text.length), 0);
+}
+
+function renderTypeContent(contents, visibleLength) {
+  let consumed = 0;
+
+  return contents.flatMap((item, index) => {
+    if (consumed >= visibleLength) return [];
+
+    if (item.break) {
+      consumed += 1;
+      return <br key={`break-${index}`} />;
+    }
+
+    const remaining = visibleLength - consumed;
+    const visibleText = item.text.slice(0, remaining);
+    consumed += item.text.length;
+
+    if (!visibleText) return [];
+
+    return (
+      <span className={item.className} key={`text-${index}`}>
+        {visibleText}
+      </span>
+    );
+  });
+}
 
 function normalizePath(pathname) {
   const path = (pathname || window.location.pathname).replace(/\/+$/, "") || "/home";
@@ -116,18 +157,17 @@ function Footer() {
 
 const TypeWriter = forwardRef(function TypeWriter({ contents, className }, ref) {
   const [index, setIndex] = useState(0);
-  const [words, setWords] = useState("");
   const [blink, setBlink] = useState(true);
   const timerRef = useRef(null);
-  const content = useMemo(() => contents.reduce((prev, curr) => `${prev} ${curr}`, ""), [contents]);
+  const contentLength = useMemo(() => getTypeContentLength(contents), [contents]);
+  const visibleContent = useMemo(() => renderTypeContent(contents, index), [contents, index]);
 
   useImperativeHandle(ref, () => ({
     showAll() {
       clearTimeout(timerRef.current);
-      setWords(content);
-      setIndex(content.length + 1);
+      setIndex(contentLength);
     },
-  }));
+  }), [contentLength]);
 
   useEffect(() => {
     const blinkTimer = setInterval(() => {
@@ -146,25 +186,19 @@ const TypeWriter = forwardRef(function TypeWriter({ contents, className }, ref) 
   }, []);
 
   useEffect(() => {
-    if (index === 0 || index > content.length) return;
+    if (index === 0 || index >= contentLength) return;
 
     let nextIndex = index;
-    if (content.slice(nextIndex, nextIndex + 1) === "<") {
-      const close = content.slice(nextIndex).indexOf(">");
-      nextIndex += close;
-    }
-
-    setWords(content.slice(0, nextIndex));
     timerRef.current = setTimeout(() => {
       setIndex(nextIndex + 1);
     }, 100);
 
     return () => clearTimeout(timerRef.current);
-  }, [content, index]);
+  }, [contentLength, index]);
 
   return (
     <div className={`font ${className || ""}`}>
-      <span dangerouslySetInnerHTML={{ __html: words }} />
+      <span>{visibleContent}</span>
       {blink && <span>|</span>}
     </div>
   );
@@ -232,6 +266,9 @@ function PhotoCarousel({ isPlaying, onImageClick }) {
                 className="myImg"
                 src={item.src}
                 alt={item.alt}
+                decoding="async"
+                fetchPriority={index === activeIndex ? "high" : "auto"}
+                loading={index === activeIndex ? "eager" : "lazy"}
                 onClick={() => onImageClick(item)}
               />
               {index !== activeIndex && <div className="el-carousel__mask" />}
@@ -285,7 +322,7 @@ function ModalImg({ image, onClose }) {
         &times;
       </span>
       <img className="modal-content" src={image.src} id="img01" alt={image.alt} />
-      <div id="caption" dangerouslySetInnerHTML={{ __html: image.alt }} />
+      <div id="caption">{image.alt}</div>
     </div>
   );
 }
@@ -359,11 +396,19 @@ function ParticlesBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let isAnimating = false;
+
+    if (prefersReducedMotion.matches) {
+      return undefined;
+    }
 
     const resize = () => {
       canvas.width = canvas.clientWidth;
       canvas.height = canvas.clientHeight;
-      particlesRef.current = Array.from({ length: 100 }, () => ({
+      const particleCount = window.innerWidth <= 700 ? 35 : 60;
+
+      particlesRef.current = Array.from({ length: particleCount }, () => ({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         radius: 1 + Math.random() * 3,
@@ -374,6 +419,8 @@ function ParticlesBackground() {
     };
 
     const render = () => {
+      if (!isAnimating) return;
+
       context.clearRect(0, 0, canvas.width, canvas.height);
       particlesRef.current.forEach((particle, index) => {
         particle.x += particle.vx;
@@ -407,13 +454,34 @@ function ParticlesBackground() {
       animationRef.current = requestAnimationFrame(render);
     };
 
+    const start = () => {
+      if (isAnimating || document.hidden) return;
+      isAnimating = true;
+      animationRef.current = requestAnimationFrame(render);
+    };
+
+    const stop = () => {
+      isAnimating = false;
+      cancelAnimationFrame(animationRef.current);
+    };
+
+    const syncAnimation = () => {
+      if (document.hidden) {
+        stop();
+      } else {
+        start();
+      }
+    };
+
     resize();
-    render();
+    start();
     window.addEventListener("resize", resize);
+    document.addEventListener("visibilitychange", syncAnimation);
 
     return () => {
-      cancelAnimationFrame(animationRef.current);
+      stop();
       window.removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", syncAnimation);
     };
   }, []);
 

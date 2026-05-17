@@ -1,8 +1,8 @@
 import geekFantasy from './assets/images/GeekFantasy.png';
-import photoOne from './assets/images/2022-09-14_3.jpeg';
-import photoTwo from './assets/images/2022-09-14_1.jpeg';
-import photoThree from './assets/images/2022-09-02.jpeg';
-import photoFour from './assets/images/2022-09-02_1.jpeg';
+import photoOne from './assets/images/optimized/2022-09-14_3.jpg';
+import photoTwo from './assets/images/optimized/2022-09-14_1.jpg';
+import photoThree from './assets/images/optimized/2022-09-02.jpg';
+import photoFour from './assets/images/optimized/2022-09-02_1.jpg';
 
 export const photoList = [
   { id: 1, src: photoOne, alt: '' },
