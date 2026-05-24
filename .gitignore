@@ -42,3 +42,6 @@ Thumbs.db
 ~*
 .superpowers/
 .pnpm-store/
+
+# AI doc
+docs/
