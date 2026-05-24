@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import TypeWriterIsland from "../components/TypeWriterIsland.jsx";
+import { homeContents } from "../data";
+---
+
+<BaseLayout activePath="/home">
+  <section class="home-hero" aria-label="Introduction">
+    <TypeWriterIsland contents={homeContents} client:load />
+  </section>
+</BaseLayout>

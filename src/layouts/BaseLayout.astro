@@ -1,0 +1,62 @@
+---
+import "../assets/css/reset.css";
+import "../assets/css/common.css";
+import "../App.css";
+import ParticlesBackgroundIsland from "../components/ParticlesBackgroundIsland.jsx";
+
+const {
+  title = "Welcome | Xinkai Lin",
+  description = "Xinkai Lin is a developer in New York who likes games, guitar, travel, and photography.",
+  activePath = "/home",
+} = Astro.props;
+
+const navItems = [
+  { label: "Home", href: "/home" },
+  { label: "Photos", href: "/photo" },
+  { label: "Games", href: "/games" },
+];
+
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header w">
+        <a class="site-name" href="/home" aria-label="Xinkai Lin home">Xinkai Lin</a>
+        <nav class="site-nav" aria-label="Primary navigation">
+          {
+            navItems.map((item) => (
+              <a class:list={["site-nav-link", activePath === item.href && "is-active"]} href={item.href}>
+                {item.label}
+              </a>
+            ))
+          }
+        </nav>
+      </header>
+
+      <main class="site-main w">
+        <slot />
+      </main>
+
+      <footer class="site-footer w">
+        <nav class="social-links" aria-label="Social links">
+          <a href="https://www.linkedin.com/in/xinkailin/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://www.instagram.com/xinkai00007/" target="_blank" rel="noreferrer">Instagram</a>
+          <a href="mailto:xinkailin1995@gmail.com">Email</a>
+        </nav>
+        <p class="copyright">&copy; Xinkai Lin. All Rights Reserved {year}</p>
+      </footer>
+
+      <ParticlesBackgroundIsland client:load />
+    </div>
+  </body>
+</html>

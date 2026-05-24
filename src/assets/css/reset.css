@@ -29,7 +29,7 @@ button {
 }
 
 body {
-  font: 12px/1.5 'PT Serif', serif, Microsoft YaHei;
+  font: 16px/1.5 Georgia, 'Times New Roman', Microsoft YaHei, serif;
 }
 
 /* fix floating problem */

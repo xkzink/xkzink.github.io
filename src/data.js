@@ -4,6 +4,26 @@ import photoTwo from './assets/images/optimized/2022-09-14_1.jpg';
 import photoThree from './assets/images/optimized/2022-09-02.jpg';
 import photoFour from './assets/images/optimized/2022-09-02_1.jpg';
 
+export const homeContents = [
+  { text: 'He', className: 'underline' },
+  { text: 'llo.' },
+  { break: true },
+  { break: true },
+  { text: "I'm a " },
+  { text: 'dev', className: 'underline' },
+  { text: 'eloper from New York.' },
+  { break: true },
+  { text: 'I like ' },
+  { text: 'g', className: 'underline' },
+  { text: 'ames, ' },
+  { text: 'g', className: 'underline' },
+  { text: 'uitar, ' },
+  { text: 'tra', className: 'underline' },
+  { text: 'vel and ' },
+  { text: 'photo', className: 'underline' },
+  { text: 'graph.' },
+];
+
 export const photoList = [
   { id: 1, src: photoOne, alt: '' },
   { id: 2, src: photoTwo, alt: 'No shit allow!!' },

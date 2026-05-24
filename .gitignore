@@ -4,6 +4,7 @@ node_modules/
 # Build output
 dist/
 dist-ssr/
+.astro/
 *.local
 
 # Local environment files
@@ -40,3 +41,4 @@ Thumbs.db
 *.temp
 ~*
 .superpowers/
+.pnpm-store/
