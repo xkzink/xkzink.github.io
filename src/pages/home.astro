@@ -5,7 +5,5 @@ import { homeContents } from "../data";
 ---
 
 <BaseLayout activePath="/home">
-  <section class="home-hero" aria-label="Introduction">
-    <TypeWriterIsland contents={homeContents} client:load />
-  </section>
+  <TypeWriterIsland contents={homeContents} client:load />
 </BaseLayout>

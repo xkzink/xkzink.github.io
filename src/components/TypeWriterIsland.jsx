@@ -49,19 +49,21 @@ const TypeWriter = forwardRef(function TypeWriter({ contents }, ref) {
   }, []);
 
   useEffect(() => {
-    timerRef.current = setTimeout(() => setIndex(1), 900);
+    timerRef.current = setTimeout(() => {
+      setIndex((currentIndex) => (currentIndex === 0 ? 1 : currentIndex));
+    }, 2400);
     return () => clearTimeout(timerRef.current);
   }, []);
 
   useEffect(() => {
     if (index === 0 || index >= contentLength) return undefined;
 
-    timerRef.current = setTimeout(() => setIndex(index + 1), 80);
+    timerRef.current = setTimeout(() => setIndex(index + 1), 100);
     return () => clearTimeout(timerRef.current);
   }, [contentLength, index]);
 
   return (
-    <div className="typewriter-text">
+    <div className="font info">
       <span>{visibleContent}</span>
       {blink && <span aria-hidden="true">|</span>}
     </div>
@@ -72,7 +74,7 @@ export default function TypeWriterIsland({ contents }) {
   const typeWriterRef = useRef(null);
 
   return (
-    <div className="typewriter-wrap" onDoubleClick={() => typeWriterRef.current?.showAll()}>
+    <div className="home" onDoubleClick={() => typeWriterRef.current?.showAll()}>
       <TypeWriter ref={typeWriterRef} contents={contents} />
     </div>
   );

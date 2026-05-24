@@ -18,15 +18,15 @@ export default function ParticlesBackgroundIsland() {
     const resize = () => {
       canvas.width = canvas.clientWidth;
       canvas.height = canvas.clientHeight;
-      const particleCount = window.innerWidth <= 700 ? 28 : 48;
+      const particleCount = window.innerWidth <= 700 ? 35 : 60;
 
       particlesRef.current = Array.from({ length: particleCount }, () => ({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        radius: 1 + Math.random() * 2.4,
-        alpha: 0.12 + Math.random() * 0.34,
-        vx: (Math.random() * 0.24 + 0.18) * (Math.random() > 0.5 ? 1 : -1),
-        vy: (Math.random() * 0.24 + 0.18) * (Math.random() > 0.5 ? 1 : -1),
+        radius: 1 + Math.random() * 3,
+        alpha: 0.2 + Math.random() * 0.7,
+        vx: (Math.random() * 0.3 + 0.3) * (Math.random() > 0.5 ? 1 : -1),
+        vy: (Math.random() * 0.3 + 0.3) * (Math.random() > 0.5 ? 1 : -1),
       }));
     };
 
@@ -45,16 +45,16 @@ export default function ParticlesBackgroundIsland() {
 
         context.beginPath();
         context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-        context.fillStyle = `rgba(20, 184, 166, ${particle.alpha})`;
+        context.fillStyle = `rgba(51, 51, 51, ${particle.alpha})`;
         context.fill();
 
         for (let nextIndex = index + 1; nextIndex < particlesRef.current.length; nextIndex += 1) {
           const nextParticle = particlesRef.current[nextIndex];
           const distance = Math.hypot(particle.x - nextParticle.x, particle.y - nextParticle.y);
 
-          if (distance < 150) {
-            const alpha = (1 - distance / 150) * 0.18;
-            context.strokeStyle = `rgba(15, 23, 42, ${alpha})`;
+          if (distance < 140) {
+            const alpha = (1 - distance / 140) * 0.5;
+            context.strokeStyle = `rgba(3, 3, 3, ${alpha})`;
             context.beginPath();
             context.moveTo(particle.x, particle.y);
             context.lineTo(nextParticle.x, nextParticle.y);
@@ -97,5 +97,5 @@ export default function ParticlesBackgroundIsland() {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="particles-canvas" aria-hidden="true" />;
+  return <canvas ref={canvasRef} className="canvas particles-canvas" style={{ backgroundColor: "#fff" }} aria-hidden="true" />;
 }

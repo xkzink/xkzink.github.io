@@ -5,9 +5,7 @@ import { photoList } from "../data";
 ---
 
 <BaseLayout title="Photos | Xinkai Lin" activePath="/photo">
-  <section class="page-intro">
-    <p class="section-label">Photos</p>
-    <h1>Frames from travel and everyday wandering.</h1>
-  </section>
-  <PhotoCarouselIsland photos={photoList} client:load />
+  <div class="photo">
+    <PhotoCarouselIsland photos={photoList} client:load />
+  </div>
 </BaseLayout>

@@ -5,5 +5,6 @@
 }
 
 .underline {
-  border-bottom: 0.08em solid var(--color-accent, #14b8a6);
+  border-bottom: 2px solid;
+  border-color: #4dc0b5;
 }

@@ -29,31 +29,51 @@ const year = new Date().getFullYear();
     <title>{title}</title>
   </head>
   <body>
-    <div class="site-shell">
-      <header class="site-header w">
-        <a class="site-name" href="/home" aria-label="Xinkai Lin home">Xinkai Lin</a>
-        <nav class="site-nav" aria-label="Primary navigation">
-          {
-            navItems.map((item) => (
-              <a class:list={["site-nav-link", activePath === item.href && "is-active"]} href={item.href}>
-                {item.label}
-              </a>
-            ))
-          }
-        </nav>
+    <div class="index">
+      <header class="el-header w clearfix">
+        <div class="my-name">
+          <h1>
+            <a class="name" href="/home" aria-label="Xinkai Lin home">Xinkai Lin</a>
+          </h1>
+        </div>
+        <div class="my-link">
+          <nav aria-label="Primary navigation">
+            <ul>
+              {
+                navItems.map((item) => (
+                  <li>
+                    <a class:list={["link-color", activePath === item.href && "active-router"]} href={item.href}>
+                      {item.label}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </nav>
+        </div>
       </header>
 
-      <main class="site-main w">
+      <main class="el-main w">
         <slot />
       </main>
 
-      <footer class="site-footer w">
-        <nav class="social-links" aria-label="Social links">
-          <a href="https://www.linkedin.com/in/xinkailin/" target="_blank" rel="noreferrer">LinkedIn</a>
-          <a href="https://www.instagram.com/xinkai00007/" target="_blank" rel="noreferrer">Instagram</a>
-          <a href="mailto:xinkailin1995@gmail.com">Email</a>
-        </nav>
-        <p class="copyright">&copy; Xinkai Lin. All Rights Reserved {year}</p>
+      <footer class="el-footer w">
+        <div class="links">
+          <nav aria-label="Social links">
+            <ul>
+              <li>
+                <a href="https://www.linkedin.com/in/xinkailin/" target="_blank" rel="noreferrer">LinkedIn</a>
+              </li>
+              <li>
+                <a href="https://www.instagram.com/xinkai00007/" target="_blank" rel="noreferrer">Instagram</a>
+              </li>
+              <li class="lastLi">
+                <a href="mailto:xinkailin1995@gmail.com"> Email</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div class="copy-right">&copy; Xinkai Lin. All Rights Reserved {year}</div>
       </footer>
 
       <ParticlesBackgroundIsland client:load />

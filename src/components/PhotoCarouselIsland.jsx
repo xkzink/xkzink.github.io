@@ -8,12 +8,12 @@ function ModalImg({ image, onClose }) {
   if (!image) return null;
 
   return (
-    <div className="modal" role="dialog" aria-modal="true" aria-label="Expanded photo">
+    <div id="myModal" className="modal" role="dialog" aria-modal="true" aria-label="Expanded photo">
       <button className="close" type="button" aria-label="Close expanded photo" onClick={onClose}>
         &times;
       </button>
-      <img className="modal-content" src={getImageSrc(image)} alt={image.alt} />
-      {image.alt && <div id="caption">{image.alt}</div>}
+      <img className="modal-content" src={getImageSrc(image)} id="img01" alt={image.alt} />
+      <div id="caption">{image.alt}</div>
     </div>
   );
 }
@@ -49,62 +49,73 @@ export default function PhotoCarouselIsland({ photos }) {
   const next = () => setActiveIndex((index) => (index + 1) % photos.length);
 
   return (
-    <section className="photo-gallery" aria-label="Photo carousel">
-      <div className="carousel-frame">
-        {photos.map((item, index) => {
-          const total = photos.length;
-          const prevIndex = (activeIndex - 1 + total) % total;
-          const nextIndex = (activeIndex + 1) % total;
-          let stageClass = "is-hidden";
+    <>
+      <div className="el-carousel el-carousel--horizontal banner" aria-label="Photo carousel">
+        <div className="el-carousel__container">
+          {photos.map((item, index) => {
+            const total = photos.length;
+            const prevIndex = (activeIndex - 1 + total) % total;
+            const nextIndex = (activeIndex + 1) % total;
+            let stageClass = "is-hidden";
+            let transform = "translateX(50%) scale(0.83)";
 
-          if (index === activeIndex) {
-            stageClass = "is-active";
-          } else if (index === prevIndex) {
-            stageClass = "is-in-stage is-left";
-          } else if (index === nextIndex) {
-            stageClass = "is-in-stage is-right";
-          }
+            if (index === activeIndex) {
+              stageClass = "is-active";
+              transform = "translateX(50%) scale(1)";
+            } else if (index === prevIndex) {
+              stageClass = "is-in-stage is-left";
+              transform = "translateX(0) scale(0.83)";
+            } else if (index === nextIndex) {
+              stageClass = "is-in-stage is-right";
+              transform = "translateX(100%) scale(0.83)";
+            }
 
-          return (
-            <button
-              className={`carousel-item ${stageClass}`}
-              key={item.id}
-              type="button"
-              aria-label={`Open photo ${index + 1}`}
-              onClick={() => openImage(item)}
-            >
-              <img
-                src={getImageSrc(item)}
-                alt={item.alt}
-                decoding="async"
-                loading={index === activeIndex ? "eager" : "lazy"}
-              />
-              {index !== activeIndex && <span className="carousel-mask" aria-hidden="true" />}
-            </button>
-          );
-        })}
-
-        <button className="carousel-arrow carousel-arrow-left" type="button" aria-label="Previous photo" onClick={previous}>
-          &lsaquo;
-        </button>
-        <button className="carousel-arrow carousel-arrow-right" type="button" aria-label="Next photo" onClick={next}>
-          &rsaquo;
-        </button>
-      </div>
-
-      <div className="carousel-indicators" aria-label="Choose photo">
-        {photos.map((item, index) => (
-          <button
-            className={`carousel-dot ${index === activeIndex ? "is-active" : ""}`}
-            key={item.id}
-            type="button"
-            aria-label={`Go to photo ${index + 1}`}
-            onClick={() => setActiveIndex(index)}
-          />
-        ))}
+            return (
+              <button
+                className={`el-carousel__item el-carousel__item--card is-animating ${stageClass}`}
+                key={item.id}
+                type="button"
+                aria-label={`Open photo ${index + 1}`}
+                style={{ transform }}
+                onClick={() => openImage(item)}
+              >
+                <img
+                  className="myImg"
+                  src={getImageSrc(item)}
+                  alt={item.alt}
+                  decoding="async"
+                  fetchPriority={index === activeIndex ? "high" : "auto"}
+                  loading={index === activeIndex ? "eager" : "lazy"}
+                />
+                {index !== activeIndex && <span className="el-carousel__mask" aria-hidden="true" />}
+              </button>
+            );
+          })}
+          <button className="el-carousel__arrow el-carousel__arrow--left" type="button" aria-label="Previous photo" onClick={previous}>
+            &lsaquo;
+          </button>
+          <button className="el-carousel__arrow el-carousel__arrow--right" type="button" aria-label="Next photo" onClick={next}>
+            &rsaquo;
+          </button>
+          <ul className="el-carousel__indicators el-carousel__indicators--horizontal" aria-label="Choose photo">
+            {photos.map((item, index) => (
+              <li
+                className={`el-carousel__indicator el-carousel__indicator--horizontal ${index === activeIndex ? "is-active" : ""}`}
+                key={item.id}
+              >
+                <button
+                  className="el-carousel__button"
+                  type="button"
+                  aria-label={`Go to slide ${index + 1}`}
+                  onClick={() => setActiveIndex(index)}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
       <ModalImg image={modalImage} onClose={closeImage} />
-    </section>
+    </>
   );
 }
